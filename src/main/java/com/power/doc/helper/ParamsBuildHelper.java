@@ -305,9 +305,16 @@ public class ParamsBuildHelper extends BaseHelper {
                     // handle param
                     commonHandleParam(paramList, param, isRequired, comment.toString(), since, strRequired);
 
-                    JavaClass enumClass = ParamUtil.handleSeeEnum(param, field, projectBuilder, jsonRequest, tagsMap);
+                    JavaClass enumClass = ParamUtil.handleSeeEnum(param, field, projectBuilder,
+                        jsonRequest, tagsMap);
+                    if (Objects.isNull(enumClass)) {
+                        enumClass = ParamUtil.handleAnnotationEnum(param, field,
+                            projectBuilder, jsonRequest, tagsMap, javaAnnotations);
+                    }
                     if (Objects.nonNull(enumClass)) {
-                        comment = new StringBuilder(StringUtils.isEmpty(comment.toString()) ? enumClass.getComment() : comment.toString());
+                        comment = new StringBuilder(
+                            StringUtils.isEmpty(comment.toString()) ? enumClass.getComment()
+                                : comment.toString());
                         String enumComment = handleEnumComment(enumClass, projectBuilder);
                         param.setDesc(comment + enumComment);
                     }
