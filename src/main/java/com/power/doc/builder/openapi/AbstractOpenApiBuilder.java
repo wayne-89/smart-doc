@@ -397,6 +397,13 @@ public abstract class AbstractOpenApiBuilder {
                     }
                 }
             }
+            //自身引用
+            else if (apiParam.isSelfReferenceLoop()) {
+                Map<String, Object> arrayRef = new HashMap<>(4);
+                arrayRef.put("$ref",
+                    componentKey + OpenApiSchemaUtil.delClassName(apiParam.getClassName()));
+                propertiesData.put("items", arrayRef);
+            }
             //基础数据类型
             else{
                 Map<String, Object> arrayRef = new HashMap<>(4);
